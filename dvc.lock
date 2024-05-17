@@ -1,0 +1,86 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: src/prepare.py
+      hash: md5
+      md5: 3e6084c713b99dfb828cab29260ea2c8
+      size: 1046
+    params:
+      params.yaml:
+        prepare.categories:
+        - comp.graphics
+        - sci.space
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: 3c6c5257e26c5fa88c62e251695ed7d3.dir
+      size: 3721980
+      nfiles: 2
+  featurize:
+    cmd: python src/featurize.py data/prepared data/features
+    deps:
+    - path: data/prepared
+      hash: md5
+      md5: 3c6c5257e26c5fa88c62e251695ed7d3.dir
+      size: 3721980
+      nfiles: 2
+    - path: src/featurize.py
+      hash: md5
+      md5: db9313bc1d11c65dc5765248f36db482
+      size: 1746
+    outs:
+    - path: data/features
+      hash: md5
+      md5: e7c394aebd5ee2ad191626598e1ebddd.dir
+      size: 481545670
+      nfiles: 2
+  train:
+    cmd: python src/train.py data/features model.pkl
+    deps:
+    - path: data/features
+      hash: md5
+      md5: e7c394aebd5ee2ad191626598e1ebddd.dir
+      size: 481545670
+      nfiles: 2
+    - path: src/train.py
+      hash: md5
+      md5: 91b5f93a72a987f147c1f1eb138978f4
+      size: 865
+    params:
+      params.yaml:
+        train.alpha: 0.9
+    outs:
+    - path: model.pkl
+      hash: md5
+      md5: 86922e34e2e16f50f8691fdc86bfbc57
+      size: 982952
+  evaluate:
+    cmd: python src/evaluate.py model.pkl data/features scores.json plots.json
+    deps:
+    - path: data/features
+      hash: md5
+      md5: e7c394aebd5ee2ad191626598e1ebddd.dir
+      size: 481545670
+      nfiles: 2
+    - path: model.pkl
+      hash: md5
+      md5: 86922e34e2e16f50f8691fdc86bfbc57
+      size: 982952
+    - path: src/evaluate.py
+      hash: md5
+      md5: f7c7cc0bd09e0f014a68568ed4ef6125
+      size: 1403
+    params:
+      params.yaml:
+        train.alpha: 0.9
+    outs:
+    - path: plots.json
+      hash: md5
+      md5: 7ca69961df84b2d8cbecde2b1a5878d5
+      size: 70374
+    - path: scores.json
+      hash: md5
+      md5: ad5de534a1a63db196e036efe9419fdc
+      size: 27

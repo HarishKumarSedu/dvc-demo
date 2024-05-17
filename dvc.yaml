@@ -1,0 +1,37 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - src/prepare.py
+    params:
+    - prepare.categories
+    outs:
+    - data/prepared
+  featurize:
+    cmd: python src/featurize.py data/prepared data/features
+    deps:
+    - src/featurize.py
+    - data/prepared
+    outs:
+    - data/features  
+  train:
+    cmd: python src/train.py data/features model.pkl
+    deps:
+    - src/train.py
+    - data/features
+    params:
+    - train.alpha
+    outs:
+    - model.pkl  
+  evaluate:
+    cmd: python src/evaluate.py model.pkl data/features scores.json plots.json
+    deps:
+    - src/evaluate.py
+    - model.pkl
+    - data/features
+    metrics:
+    - scores.json
+    plots:
+    - plots.json
+    params:
+    - train.alpha

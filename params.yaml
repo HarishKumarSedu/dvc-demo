@@ -1,0 +1,7 @@
+# file params.yaml
+prepare:
+    categories:
+        - comp.graphics
+        - sci.space
+train:
+    alpha: 0.9
