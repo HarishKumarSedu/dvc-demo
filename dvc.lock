@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: src/data/raw
+      hash: md5
+      md5: 26e2ac06d24b320dd5069b4215f443d2.dir
+      size: 16711965
+      nfiles: 2704
+    - path: src/prepare.py
+      hash: md5
+      md5: 1c2745cb0aee0dbb01b23cf0a71c01b0
+      size: 1444
+    outs:
+    - path: src/data/prepared/test.csv
+      hash: md5
+      md5: 30f4dc86c5556308b4e54ef1213dbea5
+      size: 94373
+    - path: src/data/prepared/train.csv
+      hash: md5
+      md5: c8a37d1d8dfda020e982942b137b2146
+      size: 233480
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: fc90fc00716a57cc34fdd24a1c22a6b6
+      size: 1289
