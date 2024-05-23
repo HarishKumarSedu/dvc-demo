@@ -1,6 +1,6 @@
 from pathlib import Path 
 import pandas as pd 
-from . import log
+from __init__ import log
 import os 
 
 FOLDERS_TO_LABELS = {"n03445777": "golf ball", "n03888257": "parachute"}
