@@ -1,13 +1,26 @@
 schema: '2.0'
 stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: fc90fc00716a57cc34fdd24a1c22a6b6
+      size: 1289
+    outs:
+    - path: src/data/raw
+      hash: md5
+      md5: 933867a103b0124a64de0f4cd051816c.dir
+      size: 31809522
+      nfiles: 2702
   prepare:
     cmd: python src/prepare.py
     deps:
     - path: src/data/raw
       hash: md5
-      md5: 26e2ac06d24b320dd5069b4215f443d2.dir
-      size: 16711965
-      nfiles: 2704
+      md5: 933867a103b0124a64de0f4cd051816c.dir
+      size: 31809522
+      nfiles: 2702
     - path: src/prepare.py
       hash: md5
       md5: 1c2745cb0aee0dbb01b23cf0a71c01b0
@@ -21,10 +34,35 @@ stages:
       hash: md5
       md5: c8a37d1d8dfda020e982942b137b2146
       size: 233480
-  data_ingestion:
-    cmd: python src/data_ingestion.py
+  train:
+    cmd: python src/train.py
     deps:
-    - path: src/data_ingestion.py
+    - path: src/data/prepared/train.csv
       hash: md5
-      md5: fc90fc00716a57cc34fdd24a1c22a6b6
-      size: 1289
+      md5: c8a37d1d8dfda020e982942b137b2146
+      size: 233480
+    - path: src/train.py
+      hash: md5
+      md5: 219acdd9c860e70eb439648c98f1af33
+      size: 1462
+    outs:
+    - path: src/model/model.joblib
+      hash: md5
+      md5: 18d9f95d0b3d167a56b582215231152e
+      size: 241149
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: src/evaluate.py
+      hash: md5
+      md5: 8c38edcafb424e5603a145bdabdcedb1
+      size: 810
+    - path: src/model/model.joblib
+      hash: md5
+      md5: 18d9f95d0b3d167a56b582215231152e
+      size: 241149
+    outs:
+    - path: src/metrics/accuracy.json
+      hash: md5
+      md5: b6a656faf7801f38cc08ce04330a257f
+      size: 32
