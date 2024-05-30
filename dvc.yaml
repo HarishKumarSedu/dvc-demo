@@ -1,29 +1,33 @@
 stages:
   data_ingestion:
-    cmd: python src/data_ingestion.py 
+    cmd: python src/data_ingestion.py
     deps:
-      - src/data_ingestion.py 
+    - src/data_ingestion.py
     outs:
-      - src/data/raw
+    - src/data/raw
   prepare:
-    cmd: python src/prepare.py 
+    cmd: python src/prepare.py
     deps:
-      - src/prepare.py
-      - src/data/raw
+    - src/prepare.py
+    - src/data/raw
     outs:
-      - src/data/prepared/train.csv 
-      - src/data/prepared/test.csv
+    - src/data/prepared/train.csv
+    - src/data/prepared/test.csv
   train:
-    cmd: python src/train.py 
+    cmd: python src/train.py
     deps:
-      - src/train.py
-      - src/data/prepared/train.csv
+    - src/train.py
+    - src/data/prepared/train.csv
     outs:
-      - src/model/model.joblib
+    - src/model/model.joblib
   evaluate:
-    cmd: python src/evaluate.py 
+    cmd: python src/evaluate.py
     deps:
-      - src/evaluate.py
-      - src/model/model.joblib
+    - src/evaluate.py
+    - src/model/model.joblib
     metrics:
-      - src/metrics/accuracy.json
+    - src/metrics/accuracy.json
+artifacts:
+  model:
+    path: src/model/model.joblib
+    type: model
